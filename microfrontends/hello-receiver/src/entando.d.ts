@@ -4,3 +4,8 @@
 export interface HelloEvent {
   text: string;
 }
+
+// What Entando writes into the "config" attribute (see "contextParams" in entando.json).
+export interface WidgetConfig {
+  contextParams?: { page_code?: string };
+}
