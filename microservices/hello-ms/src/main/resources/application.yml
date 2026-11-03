@@ -1,2 +1,10 @@
 server:
   port: 8081 # Entando expects every microservice on port 8081
+
+spring:
+  datasource:
+    # The local database started with "ent bundle svc start postgresql".
+    # On Entando, the platform creates the database and replaces these three values.
+    url: jdbc:postgresql://localhost:5432/hello-bundle
+    username: hello-bundle-user
+    password: hello-bundle-password
