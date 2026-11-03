@@ -5,6 +5,7 @@ class HelloSender extends HTMLElement {
   connectedCallback() {
     // Entando writes the widget settings into the "config" attribute, as JSON text.
     const config = JSON.parse(this.getAttribute('config'));
+    this.buttonText = config.params.buttonText || 'Send';
     // The API claim "hello-api" gives us the address of the microservice.
     const apiUrl = config.systemParams.api['hello-api'].url;
     this.innerHTML = '<p>Loading...</p>';
@@ -17,7 +18,7 @@ class HelloSender extends HTMLElement {
   show(message) {
     this.innerHTML = '<p></p><button></button>';
     this.querySelector('p').textContent = message;
-    this.querySelector('button').textContent = 'Send';
+    this.querySelector('button').textContent = this.buttonText;
     // On click, publish a "hello" event: every MFE that subscribed to it gets the text.
     this.querySelector('button').onclick = () => {
       window.entando.globals.mediator.publish('hello', { text: message });

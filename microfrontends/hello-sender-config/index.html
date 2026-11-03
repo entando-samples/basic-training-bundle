@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>hello-sender-config — local test page</title>
+</head>
+<body>
+  <h1>Settings form of hello-sender (App Builder shows it)</h1>
+  <hello-sender-config></hello-sender-config>
+  <button id="save">Save</button>
+  <pre id="saved"></pre>
+
+  <script src="build/hello-sender-config.js"></script>
+  <script>
+    const form = document.querySelector('hello-sender-config');
+    // App Builder writes the settings saved last time when the form opens...
+    form.config = { buttonText: 'Say hello' };
+    // ...and reads them back when you click Save.
+    document.querySelector('#save').onclick = () => {
+      document.querySelector('#saved').textContent = JSON.stringify(form.config);
+    };
+  </script>
+</body>
+</html>

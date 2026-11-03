@@ -31,7 +31,14 @@
                     "type": "internal",
                     "serviceName": "hello-ms"
                 }
-            ]
+            ],
+            "params": [
+                {
+                    "name": "buttonText",
+                    "description": "Text of the send button. Default: Send"
+                }
+            ],
+            "configMfe": "hello-sender-config"
         },
         {
             "name": "hello-receiver",
@@ -54,13 +61,27 @@
             "contextParams": [
                 "page_code"
             ]
+        },
+        {
+            "name": "hello-sender-config",
+            "customElement": "hello-sender-config",
+            "stack": "custom",
+            "type": "widget-config",
+            "group": "free",
+            "publicFolder": "public",
+            "commands": {
+                "build": "mkdir -p build && cp src/hello-sender-config.js build/",
+                "run": "mkdir -p build && cp src/hello-sender-config.js build/ && npx --yes http-server . -p 5001 -c-1",
+                "pack": "mkdir -p build && cp src/hello-sender-config.js build/"
+            },
+            "version": "0.1.0"
         }
     ],
     "svc": [
         "postgresql"
     ],
     "name": "hello-bundle",
-    "version": "0.6.0",
+    "version": "0.7.0",
     "description": "Hello Bundle: Entando 7.5 training for beginners",
     "type": "bundle",
     "displayName": "Hello Bundle"
