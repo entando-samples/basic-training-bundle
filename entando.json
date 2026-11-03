@@ -57,7 +57,7 @@
     ],
     "svc": [],
     "name": "hello-bundle",
-    "version": "0.5.0",
+    "version": "0.5.1",
     "description": "Hello Bundle: Entando 7.5 training for beginners",
     "type": "bundle",
     "displayName": "Hello Bundle"

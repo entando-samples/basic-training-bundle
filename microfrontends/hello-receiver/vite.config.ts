@@ -12,5 +12,7 @@ export default defineConfig({
       formats: ['iife'], // a plain script: it runs as soon as Entando adds it to the page
       fileName: () => 'hello-receiver.js',
     },
+    // Files in public/ (our image) are copied to dist/ next to hello-receiver.js.
+    copyPublicDir: true,
   },
 });

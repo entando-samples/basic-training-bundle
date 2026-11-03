@@ -4,9 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>hello-receiver — local test page</title>
+  <!-- A page style that would make every paragraph red: the shadow DOM protects the receiver from it. -->
+  <style>p { color: red; }</style>
 </head>
 <body>
   <h1>hello-receiver</h1>
+  <p>This paragraph is red; the receiver below stays green.</p>
+
   <!-- On Entando, the platform writes the config attribute. Here we write it by hand. -->
   <hello-receiver config='{"contextParams":{"page_code":"homepage"}}'></hello-receiver>
 

@@ -9,3 +9,12 @@ export interface HelloEvent {
 export interface WidgetConfig {
   contextParams?: { page_code?: string };
 }
+
+declare global {
+  interface Window {
+    entando?: {
+      // Entando publishes, for every widget, the address where its files are served.
+      widgets?: Record<string, { basePath?: string } | undefined>;
+    };
+  }
+}

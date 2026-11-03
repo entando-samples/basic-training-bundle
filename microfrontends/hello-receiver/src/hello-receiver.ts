@@ -1,15 +1,25 @@
 // hello-receiver: our second micro frontend (MFE), the custom HTML element <hello-receiver>.
 // Written in TypeScript and built with Vite.
 import { mediatorInstance } from '@entando/mfecommunication';
+import styles from './hello-receiver.css?inline'; // the CSS as text, to put inside the shadow root
 import type { HelloEvent, WidgetConfig } from './entando';
 
 const WIDGET_NAME = 'hello-receiver'; // the "name" of the MFE in entando.json
 const EVENT = 'hello'; // published by hello-sender
 let instances = 0;
 
+// The address of a file from public/. Entando serves the files of each widget under its own base path,
+// so an absolute path like "/mailbox.svg" would point to the site root, not to our widget.
+export function assetUrl(file: string): string {
+  const basePath = window.entando?.widgets?.[WIDGET_NAME]?.basePath ?? '';
+  return `${basePath.replace(/\/$/, '')}/${file}`;
+}
+
 export class HelloReceiver extends HTMLElement {
   static observedAttributes = ['config'];
 
+  // A shadow root is a private area of the page, created once per element.
+  private readonly root = this.attachShadow({ mode: 'open' });
   // Every element on the page gets its own subscriber id, so removing one does not unsubscribe the others.
   private readonly callerId = `${WIDGET_NAME}-${++instances}`;
   private received?: string;
@@ -48,9 +58,14 @@ export class HelloReceiver extends HTMLElement {
 
   private render(): void {
     const page = this.config.contextParams?.page_code ?? 'unknown';
-    this.innerHTML = '<p></p>';
+    this.root.innerHTML = `<style>${styles}</style>
+      <div class="card" part="card">
+        <img alt="Mailbox">
+        <p></p>
+      </div>`;
+    this.root.querySelector('img')!.src = assetUrl('mailbox.svg');
     // textContent, not innerHTML: the text comes from another MFE and must never become HTML.
-    this.querySelector('p')!.textContent =
+    this.root.querySelector('p')!.textContent =
       this.received === undefined ? `Waiting for a message on page ${page}` : `Received: ${this.received}`;
   }
 }
