@@ -10,7 +10,7 @@ class HelloSender extends HTMLElement {
     this.innerHTML = '<p>Loading...</p>';
     fetch(apiUrl + '/api/hello')
       .then((response) => response.json())
-      .then((data) => this.show(data.message))
+      .then((data) => this.show(data.message + ' Visits: ' + data.visits))
       .catch(() => { this.innerHTML = '<p>The microservice is not reachable.</p>'; });
   }
 

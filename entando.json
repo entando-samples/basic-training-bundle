@@ -3,7 +3,8 @@
         {
             "name": "hello-ms",
             "stack": "spring-boot",
-            "healthCheckPath": "/api/health"
+            "healthCheckPath": "/api/health",
+            "dbms": "postgresql"
         }
     ],
     "microfrontends": [
@@ -55,9 +56,11 @@
             ]
         }
     ],
-    "svc": [],
+    "svc": [
+        "postgresql"
+    ],
     "name": "hello-bundle",
-    "version": "0.5.1",
+    "version": "0.6.0",
     "description": "Hello Bundle: Entando 7.5 training for beginners",
     "type": "bundle",
     "displayName": "Hello Bundle"
