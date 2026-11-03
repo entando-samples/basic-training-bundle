@@ -3,7 +3,7 @@
     "microfrontends": [],
     "svc": [],
     "name": "hello-bundle",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Hello Bundle: Entando 7.5 training for beginners",
     "type": "bundle",
     "displayName": "Hello Bundle"
