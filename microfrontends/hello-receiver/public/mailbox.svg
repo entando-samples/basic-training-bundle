@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Mailbox">
+  <rect x="6" y="22" width="40" height="30" rx="8" fill="#2e7d32"/>
+  <rect x="12" y="28" width="28" height="18" rx="4" fill="#e8f5e9"/>
+  <rect x="46" y="34" width="4" height="26" fill="#5d4037"/>
+  <rect x="46" y="10" width="3" height="16" fill="#c62828"/>
+  <rect x="49" y="10" width="11" height="8" fill="#c62828"/>
+  <path d="M14 30l12 8 12-8" fill="none" stroke="#2e7d32" stroke-width="2.5" stroke-linejoin="round"/>
+</svg>

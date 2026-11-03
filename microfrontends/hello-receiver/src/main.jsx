@@ -9,7 +9,8 @@ class HelloReceiver extends HTMLElement {
 
   // The browser calls connectedCallback when the element appears on the page: start React.
   connectedCallback() {
-    this.root = createRoot(this)
+    // A shadow root is a private area of the page: page styles cannot reach it, ours cannot leak out.
+    this.root = createRoot(this.shadowRoot ?? this.attachShadow({ mode: 'open' }))
     this.render()
   }
 
