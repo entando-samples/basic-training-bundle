@@ -2,8 +2,8 @@
     "microservices": [],
     "microfrontends": [],
     "svc": [],
-    "name": "training26",
+    "name": "hello-bundle",
     "version": "0.0.1",
-    "description": "training26 description",
+    "description": "hello-bundle description",
     "type": "bundle"
 }
