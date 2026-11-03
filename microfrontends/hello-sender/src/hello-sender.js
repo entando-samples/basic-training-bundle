@@ -3,7 +3,15 @@
 class HelloSender extends HTMLElement {
   // The browser calls connectedCallback when the element appears on the page.
   connectedCallback() {
-    this.show('Hello from the sender!');
+    // Entando writes the widget settings into the "config" attribute, as JSON text.
+    const config = JSON.parse(this.getAttribute('config'));
+    // The API claim "hello-api" gives us the address of the microservice.
+    const apiUrl = config.systemParams.api['hello-api'].url;
+    this.innerHTML = '<p>Loading...</p>';
+    fetch(apiUrl + '/api/hello')
+      .then((response) => response.json())
+      .then((data) => this.show(data.message))
+      .catch(() => { this.innerHTML = '<p>The microservice is not reachable.</p>'; });
   }
 
   show(message) {

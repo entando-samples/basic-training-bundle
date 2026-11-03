@@ -7,7 +7,9 @@
 </head>
 <body>
   <h1>hello-sender</h1>
-  <hello-sender></hello-sender>
+  <!-- On Entando, the platform writes the config attribute. Here we write it by hand:
+       the API claim "hello-api" points to hello-ms started with "ent bundle run hello-ms". -->
+  <hello-sender config='{"systemParams":{"api":{"hello-api":{"url":"http://localhost:8081"}}}}'></hello-sender>
 
   <!-- hello-receiver is deployed on its own: here we play its part and show every "hello" event. -->
   <h2>Pretend to be hello-receiver</h2>
