@@ -2,6 +2,9 @@ package org.entando.hello;
 
 import java.util.Map;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,5 +31,12 @@ public class HelloController {
         database.update("INSERT INTO visits DEFAULT VALUES");
         Integer visits = database.queryForObject("SELECT COUNT(*) FROM visits", Integer.class);
         return Map.of("message", "Hello from hello-ms!", "visits", visits);
+    }
+
+    @GetMapping("/api/secret")
+    @PreAuthorize("hasAuthority('hello-user')") // signed in AND with the role hello-user, else 403
+    public Map<String, String> secret(@AuthenticationPrincipal Jwt token) {
+        String user = token.getClaimAsString("preferred_username");
+        return Map.of("message", "Hello " + user + ", only signed-in users can read this.");
     }
 }
