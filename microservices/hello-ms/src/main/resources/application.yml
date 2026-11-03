@@ -8,3 +8,16 @@ spring:
     url: jdbc:postgresql://localhost:5432/hello-bundle
     username: hello-bundle-user
     password: hello-bundle-password
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # The Keycloak server that signs the tokens. Locally: "ent bundle svc start keycloak".
+          issuer-uri: ${KEYCLOAK_AUTH_URL:http://localhost:9080/auth}/realms/${KEYCLOAK_REALM:entando-dev}
+
+hello:
+  keycloak:
+    # The Keycloak client that holds the roles of hello-ms ("roles" in entando.json).
+    # Locally: the "internal" client of the test Keycloak. On Entando, the platform creates
+    # a client for hello-ms and passes its name in the variable KEYCLOAK_CLIENT_ID.
+    client-id: ${KEYCLOAK_CLIENT_ID:internal}
