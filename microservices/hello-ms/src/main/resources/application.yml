@@ -1,0 +1,2 @@
+server:
+  port: 8081 # Entando expects every microservice on port 8081
