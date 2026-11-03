@@ -1,0 +1,20 @@
+{
+  "name": "hello-receiver",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "start": "vite",
+    "typecheck": "tsc",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@entando/mfecommunication": "1.0.12"
+  },
+  "devDependencies": {
+    "typescript": "5.9.3",
+    "vite": "7.3.7"
+  }
+}

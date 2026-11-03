@@ -3,7 +3,17 @@
 class HelloSender extends HTMLElement {
   // The browser calls connectedCallback when the element appears on the page.
   connectedCallback() {
-    this.innerHTML = '<p>Hello from the sender!</p>';
+    this.show('Hello from the sender!');
+  }
+
+  show(message) {
+    this.innerHTML = '<p></p><button></button>';
+    this.querySelector('p').textContent = message;
+    this.querySelector('button').textContent = 'Send';
+    // On click, publish a "hello" event: every MFE that subscribed to it gets the text.
+    this.querySelector('button').onclick = () => {
+      window.entando.globals.mediator.publish('hello', { text: message });
+    };
   }
 }
 

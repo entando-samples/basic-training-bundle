@@ -13,16 +13,35 @@
                 "it": "Hello Sender"
             },
             "commands": {
-                "build": "mkdir -p build && cp src/hello-sender.js build/",
-                "run": "mkdir -p build && cp src/hello-sender.js build/ && npx --yes http-server . -p 5000 -c-1",
-                "pack": "mkdir -p build && cp src/hello-sender.js build/"
+                "build": "npm install && npm run build",
+                "run": "npm install && npm run build && npx --yes http-server . -p 5000 -c-1",
+                "pack": "npm install && npm run build"
+            },
+            "version": "0.1.0"
+        },
+        {
+            "name": "hello-receiver",
+            "customElement": "hello-receiver",
+            "stack": "custom",
+            "type": "widget",
+            "group": "free",
+            "publicFolder": "public",
+            "titles": {
+                "en": "Hello Receiver",
+                "it": "Hello Receiver"
+            },
+            "buildFolder": "dist",
+            "commands": {
+                "build": "npm install && npm run build",
+                "run": "npm install && npm run dev",
+                "pack": "npm install && npm run build"
             },
             "version": "0.1.0"
         }
     ],
     "svc": [],
     "name": "hello-bundle",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "description": "Hello Bundle: Entando 7.5 training for beginners",
     "type": "bundle",
     "displayName": "Hello Bundle"
