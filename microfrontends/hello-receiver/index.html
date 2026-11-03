@@ -7,7 +7,8 @@
 </head>
 <body>
   <h1>hello-receiver</h1>
-  <hello-receiver></hello-receiver>
+  <!-- On Entando, the platform writes the config attribute. Here we write it by hand. -->
+  <hello-receiver config='{"contextParams":{"page_code":"homepage"}}'></hello-receiver>
 
   <!-- hello-sender is deployed on its own: here we play its part and publish the "hello" event ourselves. -->
   <h2>Pretend to be hello-sender</h2>

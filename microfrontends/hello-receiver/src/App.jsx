@@ -3,8 +3,9 @@ import { mediatorInstance } from '@entando/mfecommunication'
 
 let instances = 0
 
-export default function App() {
+export default function App({ config }) {
   const [received, setReceived] = useState()
+  const page = config.contextParams?.page_code ?? 'unknown' // "contextParams" in entando.json
 
   // Subscribe to the "hello" event of hello-sender; unsubscribe when the element leaves the page.
   useEffect(() => {
@@ -14,5 +15,5 @@ export default function App() {
   }, [])
 
   // React writes text, never HTML: what another MFE sends cannot become code on our page.
-  return <p>{received === undefined ? 'Waiting for a message...' : `Received: ${received}`}</p>
+  return <p>{received === undefined ? `Waiting for a message on page ${page}` : `Received: ${received}`}</p>
 }
