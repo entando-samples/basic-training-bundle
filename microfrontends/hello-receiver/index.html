@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>hello-receiver — local test page</title>
+</head>
+<body>
+  <h1>hello-receiver</h1>
+  <hello-receiver></hello-receiver>
+
+  <!-- hello-sender is deployed on its own: here we play its part and publish the "hello" event ourselves. -->
+  <h2>Pretend to be hello-sender</h2>
+  <input id="text" value="Hello from the test page!">
+  <button id="send">Publish "hello"</button>
+  <button id="toggle">Remove / add the receiver</button>
+
+  <script type="module" src="/src/main.jsx"></script>
+  <script type="module">
+    import { mediatorInstance } from '@entando/mfecommunication';
+
+    document.querySelector('#send').onclick = () =>
+      mediatorInstance.publish('hello', { text: document.querySelector('#text').value });
+
+    // Removing the element calls disconnectedCallback (unsubscribe); adding it back subscribes again.
+    const receiver = document.querySelector('hello-receiver');
+    document.querySelector('#toggle').onclick = () =>
+      receiver.isConnected ? receiver.remove() : document.body.insertBefore(receiver, document.querySelector('h2'));
+  </script>
+</body>
+</html>

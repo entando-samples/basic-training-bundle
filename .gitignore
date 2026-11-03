@@ -11,6 +11,8 @@
 **/node_modules
 **/target
 **/build
+**/dist
+**/package-lock.json
 
 ######################
 # IntelliJ IDEA

@@ -1,0 +1,11 @@
+{
+  "name": "hello-sender",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "build": "mkdir -p build && cat node_modules/@entando/mfecommunication/dist/entando-mfecommunication.umd.cjs src/hello-sender.js > build/hello-sender.js"
+  },
+  "dependencies": {
+    "@entando/mfecommunication": "1.0.12"
+  }
+}

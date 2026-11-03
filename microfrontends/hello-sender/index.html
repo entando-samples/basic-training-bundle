@@ -9,6 +9,16 @@
   <h1>hello-sender</h1>
   <hello-sender></hello-sender>
 
+  <!-- hello-receiver is deployed on its own: here we play its part and show every "hello" event. -->
+  <h2>Pretend to be hello-receiver</h2>
+  <pre id="events">No "hello" event yet.</pre>
+
   <script src="build/hello-sender.js"></script>
+  <script>
+    window.entando.globals.mediator.subscribe('hello', {
+      callerId: 'test-page',
+      callback: (data) => { document.querySelector('#events').textContent = 'Received: ' + data.text; },
+    });
+  </script>
 </body>
 </html>
