@@ -1,0 +1,357 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>$pagetitle$</title>
+<style>
+:root {
+  --accent: #1d6fc9;
+  --accent-dark: #0d4c95;
+  --text: #2c3e50;
+  --muted: #6a8bad;
+  --border: #eaecef;
+  --code-inline-bg: rgba(27, 31, 35, .05);
+  --code-inline: #476582;
+  --pre-bg: #282c34;
+  --navbar-h: 3.6rem;
+  --sidebar-w: 20rem;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: calc(var(--navbar-h) + 1rem); }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+               "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  color: var(--text);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; font-weight: 500; }
+a:hover { text-decoration: underline; }
+
+/* ---------- navbar ---------- */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+  height: var(--navbar-h);
+  padding: .7rem 1.5rem;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: .8rem;
+}
+.navbar .logo {
+  display: flex; align-items: center; gap: .55rem;
+  font-size: 1.3rem; font-weight: 600; color: var(--text);
+}
+.navbar .logo:hover { text-decoration: none; }
+.navbar .logo svg { width: 2rem; height: 2rem; }
+.navbar .version {
+  font-size: .8rem; font-weight: 600; color: var(--accent);
+  border: 1px solid var(--accent); border-radius: 3px; padding: .05rem .4rem;
+}
+.navbar .spacer { flex: 1; }
+.navbar .nav-link { color: var(--text); font-size: .95rem; }
+.navbar .nav-link:hover { color: var(--accent); text-decoration: none; }
+.sidebar-toggle {
+  display: none; background: none; border: 0; cursor: pointer; padding: .3rem;
+  color: var(--text);
+}
+.sidebar-toggle svg { width: 1.4rem; height: 1.4rem; display: block; }
+
+/* ---------- sidebar ---------- */
+.sidebar {
+  position: fixed; top: var(--navbar-h); bottom: 0; left: 0; z-index: 10;
+  width: var(--sidebar-w);
+  background: #fff;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 1.5rem 0 2rem;
+  font-size: 16px;
+}
+.sidebar .group-title {
+  padding: .35rem 1.5rem; margin: 0;
+  font-size: 1.1em; font-weight: 700; color: var(--text);
+}
+.sidebar ul { list-style: none; margin: 0; padding: 0; }
+.sidebar > nav > ul > li > a {
+  display: block;
+  padding: .35rem 1rem .35rem 1.25rem;
+  border-left: .25rem solid transparent;
+  color: var(--text); font-weight: 400; line-height: 1.4;
+}
+.sidebar > nav > ul > li > a:hover { color: var(--accent); text-decoration: none; }
+.sidebar > nav > ul > li > a.active {
+  color: var(--accent); font-weight: 600; border-left-color: var(--accent);
+}
+.sidebar ul ul { padding-left: 2rem; }
+.sidebar ul ul a {
+  display: block; padding: .2rem 1rem .2rem 0;
+  font-size: .95em; color: var(--text); font-weight: 400;
+}
+.sidebar ul ul a:hover, .sidebar ul ul a.active { color: var(--accent); text-decoration: none; }
+.sidebar ul ul a.active { font-weight: 600; }
+
+/* ---------- content ---------- */
+.page { padding-left: var(--sidebar-w); padding-top: var(--navbar-h); }
+.content {
+  max-width: 740px; margin: 0 auto;
+  padding: 2rem 2.5rem 4rem;
+  line-height: 1.7;
+}
+h1, h2, h3, h4 { font-weight: 600; line-height: 1.25; position: relative; }
+h1 { font-size: 2.2rem; margin-top: .5rem; }
+h2 {
+  font-size: 1.65rem; margin-top: 3rem; padding-bottom: .3rem;
+  border-bottom: 1px solid var(--border);
+}
+h3 { font-size: 1.35rem; margin-top: 2.2rem; }
+h4 { font-size: 1.1rem; }
+.header-anchor {
+  position: absolute; left: -.87em; padding-right: .23em;
+  font-size: .85em; opacity: 0; color: var(--accent);
+}
+h1:hover .header-anchor, h2:hover .header-anchor, h3:hover .header-anchor, h4:hover .header-anchor { opacity: 1; }
+.header-anchor:hover { text-decoration: none; }
+p, ul, ol { margin: 1rem 0; }
+li + li { margin-top: .25rem; }
+li > p { margin: .5rem 0; }
+strong { font-weight: 600; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: .85em;
+  color: var(--code-inline);
+  background: var(--code-inline-bg);
+  padding: .25rem .5rem; border-radius: 3px;
+  overflow-wrap: anywhere;
+}
+a code { color: var(--accent); }
+
+/* code blocks */
+div.sourceCode, .content > pre, li > pre {
+  position: relative;
+  background: var(--pre-bg);
+  border-radius: 6px;
+  margin: .85rem 0;
+}
+pre {
+  margin: 0;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  background: var(--pre-bg);
+  border-radius: 6px;
+  line-height: 1.4;
+}
+pre code, pre code span {
+  color: #fff; background: transparent; padding: 0; border-radius: 0;
+  font-size: .85em; overflow-wrap: normal;
+}
+pre code { white-space: pre; }
+.lang-label {
+  position: absolute; top: .8em; right: 1em; z-index: 1;
+  font-size: .75rem; color: rgba(255, 255, 255, .4);
+  font-family: source-code-pro, Menlo, Monaco, Consolas, monospace;
+  transition: opacity .2s;
+}
+.copy-btn {
+  position: absolute; top: .55em; right: .6em; z-index: 2;
+  font-size: .75rem; color: rgba(255, 255, 255, .8);
+  background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 4px; padding: .15rem .55rem; cursor: pointer;
+  opacity: 0; transition: opacity .2s;
+}
+div.sourceCode:hover .copy-btn, .content > pre:hover .copy-btn, li > pre:hover .copy-btn { opacity: 1; }
+div.sourceCode:hover .lang-label { opacity: 0; }
+
+/* syntax colors (One Dark–like, as in the Entando / VuePress docs) */
+code span.kw, code span.cf, code span.im { color: #cc99cd; }
+code span.dt, code span.bu { color: #f8c555; }
+code span.st, code span.ch, code span.ss, code span.vs { color: #7ec699; }
+code span.co, code span.cv, code span.do, code span.an { color: #999; font-style: italic; }
+code span.dv, code span.bn, code span.fl, code span.cn { color: #f08d49; }
+code span.fu { color: #f08d49; }
+code span.at { color: #e2777a; }
+code span.op { color: #67cdcc; }
+code span.va { color: #e2777a; }
+code span.pp { color: #cc99cd; }
+code span.ot { color: #6196cc; }
+code span.sc { color: #67cdcc; }
+code span.er, code span.al { color: #e2777a; font-weight: 600; }
+
+/* tables */
+table {
+  border-collapse: collapse; margin: 1rem 0;
+  display: block; overflow-x: auto;
+}
+th, td { border: 1px solid #dfe2e5; padding: .6em 1em; text-align: left; vertical-align: top; }
+th { font-weight: 600; }
+tr:nth-child(2n) { background: #f6f8fa; }
+
+blockquote {
+  margin: 1rem 0; padding: .1rem 1rem;
+  border-left: .2rem solid #dfe2e5; color: #6a737d; font-size: 1rem;
+}
+
+/* "Goal:", "Start:", "Check:" … highlighted like VuePress custom blocks */
+p.tip, p.check {
+  padding: .5rem 1.5rem; border-left: .5rem solid; border-radius: 2px; margin: 1rem 0;
+}
+p.tip { background: #f3f5f7; border-color: #42b983; }
+p.check { background: #eef5fd; border-color: var(--accent); }
+p.stuck { background: rgba(255, 229, 100, .3); border-left: .5rem solid #e7c000; padding: .5rem 1.5rem; border-radius: 2px; }
+
+.footer {
+  margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+  font-size: .85rem; color: var(--muted);
+}
+
+/* back to top */
+.to-top {
+  position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: 5;
+  width: 2.4rem; height: 2.4rem; border-radius: 50%;
+  background: var(--accent); color: #fff; border: 0; cursor: pointer;
+  font-size: 1.1rem; box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+.to-top.show { opacity: 1; pointer-events: auto; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 959px) {
+  :root { --sidebar-w: 16.4rem; }
+  .sidebar { font-size: 15px; }
+}
+@media (max-width: 719px) {
+  .sidebar-toggle { display: block; }
+  .navbar { padding-left: 1rem; }
+  .navbar .nav-link { display: none; }
+  .sidebar { transform: translateX(-100%); transition: transform .2s ease; }
+  body.sidebar-open .sidebar { transform: none; box-shadow: 0 0 20px rgba(0,0,0,.15); }
+  .page { padding-left: 0; }
+  .content { padding: 1.5rem 1rem 3rem; }
+  .content > div.sourceCode, .content > pre { margin: .85rem -1rem; border-radius: 0; }
+  h1 { font-size: 1.9rem; }
+  .header-anchor { display: none; }
+}
+@media print {
+  .navbar, .sidebar, .to-top, .copy-btn { display: none !important; }
+  .page { padding: 0; }
+  pre { white-space: pre-wrap; }
+}
+</style>
+</head>
+<body>
+<header class="navbar">
+  <button class="sidebar-toggle" aria-label="Toggle sidebar">
+    <svg viewBox="0 0 448 512"><path fill="currentColor" d="M436 124H12c-6.6 0-12-5.4-12-12V80c0-6.6 5.4-12 12-12h424c6.6 0 12 5.4 12 12v32c0 6.6-5.4 12-12 12zm0 160H12c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h424c6.6 0 12 5.4 12 12v32c0 6.6-5.4 12-12 12zm0 160H12c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h424c6.6 0 12 5.4 12 12v32c0 6.6-5.4 12-12 12z"/></svg>
+  </button>
+  <a class="logo" href="#">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="2" y="2" width="28" height="28" rx="6" fill="#1d6fc9"/>
+      <path d="M10 9h12v3H13.5v2.5H21v3h-7.5V20H22v3H10z" fill="#fff"/>
+    </svg>
+    Hello Bundle
+  </a>
+  <span class="version">Entando 7.5</span>
+  <span class="spacer"></span>
+  <a class="nav-link" href="https://developer.entando.com/v7.5/" target="_blank" rel="noopener">Entando Docs</a>
+</header>
+
+<aside class="sidebar">
+  <p class="group-title">$pagetitle$</p>
+  <nav>
+$table-of-contents$
+  </nav>
+</aside>
+
+<main class="page">
+  <div class="content">
+    <h1 id="top">$title$</h1>
+$body$
+    <div class="footer">Generated from STEPS.md</div>
+  </div>
+</main>
+
+<button class="to-top" aria-label="Back to top">&#8593;</button>
+
+<script>
+(function () {
+  var content = document.querySelector('.content');
+
+  // header anchors
+  content.querySelectorAll('h1[id], h2[id], h3[id], h4[id]').forEach(function (h) {
+    var a = document.createElement('a');
+    a.className = 'header-anchor'; a.href = '#' + h.id; a.textContent = '#';
+    a.setAttribute('aria-hidden', 'true');
+    h.insertBefore(a, h.firstChild);
+  });
+
+  // language labels + copy buttons
+  content.querySelectorAll('pre').forEach(function (pre) {
+    var box = pre.parentElement.classList.contains('sourceCode') ? pre.parentElement : pre;
+    var m = (pre.className || '').match(/sourceCode\s+(\w+)/);
+    if (m) {
+      var label = document.createElement('span');
+      label.className = 'lang-label'; label.textContent = m[1];
+      box.appendChild(label);
+    }
+    var btn = document.createElement('button');
+    btn.className = 'copy-btn'; btn.textContent = 'Copy';
+    btn.addEventListener('click', function () {
+      var text = pre.innerText;
+      var done = function () { btn.textContent = 'Copied!'; setTimeout(function () { btn.textContent = 'Copy'; }, 1500); };
+      if (navigator.clipboard) { navigator.clipboard.writeText(text).then(done, function () {}); }
+    });
+    box.appendChild(btn);
+  });
+
+  // callout styling for the recurring step markers
+  content.querySelectorAll('p').forEach(function (p) {
+    var s = p.firstElementChild;
+    if (!s || s.tagName !== 'STRONG' || p.firstChild !== s) return;
+    var t = s.textContent.trim();
+    if (/^(Goal|Start):?$$/.test(t)) p.classList.add('tip');
+    else if (/^(Check|What you should see):?$$/.test(t)) p.classList.add('check');
+    else if (/^Stuck\?$$/.test(t)) p.classList.add('stuck');
+  });
+
+  // mobile sidebar
+  document.querySelector('.sidebar-toggle').addEventListener('click', function () {
+    document.body.classList.toggle('sidebar-open');
+  });
+  document.querySelectorAll('.sidebar a').forEach(function (a) {
+    a.addEventListener('click', function () { document.body.classList.remove('sidebar-open'); });
+  });
+
+  // active link in the sidebar
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidebar a[href^="#"]'));
+  var heads = links.map(function (a) { return document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1))); });
+  var toTop = document.querySelector('.to-top');
+  toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  function onScroll() {
+    var y = window.scrollY + 100, current = -1;
+    heads.forEach(function (h, i) { if (h && h.offsetTop <= y) current = i; });
+    links.forEach(function (a, i) {
+      a.classList.toggle('active', i === current);
+    });
+    // also mark the parent step of an active sub-link
+    if (current >= 0) {
+      var parentLi = links[current].closest('ul ul');
+      if (parentLi) {
+        var top = parentLi.parentElement.querySelector(':scope > a');
+        if (top) top.classList.add('active');
+      }
+      var al = links[current];
+      var sb = document.querySelector('.sidebar');
+      var r = al.getBoundingClientRect(), sr = sb.getBoundingClientRect();
+      if (r.top < sr.top || r.bottom > sr.bottom) al.scrollIntoView({ block: 'nearest' });
+    }
+    toTop.classList.toggle('show', window.scrollY > 600);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>

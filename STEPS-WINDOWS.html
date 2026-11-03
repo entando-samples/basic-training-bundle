@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hello Bundle — Windows guide</title>
+<style>
+:root {
+  --accent: #1d6fc9;
+  --accent-dark: #0d4c95;
+  --text: #2c3e50;
+  --muted: #6a8bad;
+  --border: #eaecef;
+  --code-inline-bg: rgba(27, 31, 35, .05);
+  --code-inline: #476582;
+  --pre-bg: #282c34;
+  --navbar-h: 3.6rem;
+  --sidebar-w: 20rem;
+}
+* { box-sizing: border-box; }
+html { scroll-padding-top: calc(var(--navbar-h) + 1rem); }
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
+               "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  color: var(--text);
+  background: #fff;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; font-weight: 500; }
+a:hover { text-decoration: underline; }
+
+/* ---------- navbar ---------- */
+.navbar {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 20;
+  height: var(--navbar-h);
+  padding: .7rem 1.5rem;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: .8rem;
+}
+.navbar .logo {
+  display: flex; align-items: center; gap: .55rem;
+  font-size: 1.3rem; font-weight: 600; color: var(--text);
+}
+.navbar .logo:hover { text-decoration: none; }
+.navbar .logo svg { width: 2rem; height: 2rem; }
+.navbar .version {
+  font-size: .8rem; font-weight: 600; color: var(--accent);
+  border: 1px solid var(--accent); border-radius: 3px; padding: .05rem .4rem;
+}
+.navbar .spacer { flex: 1; }
+.navbar .nav-link { color: var(--text); font-size: .95rem; }
+.navbar .nav-link:hover { color: var(--accent); text-decoration: none; }
+.sidebar-toggle {
+  display: none; background: none; border: 0; cursor: pointer; padding: .3rem;
+  color: var(--text);
+}
+.sidebar-toggle svg { width: 1.4rem; height: 1.4rem; display: block; }
+
+/* ---------- sidebar ---------- */
+.sidebar {
+  position: fixed; top: var(--navbar-h); bottom: 0; left: 0; z-index: 10;
+  width: var(--sidebar-w);
+  background: #fff;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  padding: 1.5rem 0 2rem;
+  font-size: 16px;
+}
+.sidebar .group-title {
+  padding: .35rem 1.5rem; margin: 0;
+  font-size: 1.1em; font-weight: 700; color: var(--text);
+}
+.sidebar ul { list-style: none; margin: 0; padding: 0; }
+.sidebar > nav > ul > li > a {
+  display: block;
+  padding: .35rem 1rem .35rem 1.25rem;
+  border-left: .25rem solid transparent;
+  color: var(--text); font-weight: 400; line-height: 1.4;
+}
+.sidebar > nav > ul > li > a:hover { color: var(--accent); text-decoration: none; }
+.sidebar > nav > ul > li > a.active {
+  color: var(--accent); font-weight: 600; border-left-color: var(--accent);
+}
+.sidebar ul ul { padding-left: 2rem; }
+.sidebar ul ul a {
+  display: block; padding: .2rem 1rem .2rem 0;
+  font-size: .95em; color: var(--text); font-weight: 400;
+}
+.sidebar ul ul a:hover, .sidebar ul ul a.active { color: var(--accent); text-decoration: none; }
+.sidebar ul ul a.active { font-weight: 600; }
+
+/* ---------- content ---------- */
+.page { padding-left: var(--sidebar-w); padding-top: var(--navbar-h); }
+.content {
+  max-width: 740px; margin: 0 auto;
+  padding: 2rem 2.5rem 4rem;
+  line-height: 1.7;
+}
+h1, h2, h3, h4 { font-weight: 600; line-height: 1.25; position: relative; }
+h1 { font-size: 2.2rem; margin-top: .5rem; }
+h2 {
+  font-size: 1.65rem; margin-top: 3rem; padding-bottom: .3rem;
+  border-bottom: 1px solid var(--border);
+}
+h3 { font-size: 1.35rem; margin-top: 2.2rem; }
+h4 { font-size: 1.1rem; }
+.header-anchor {
+  position: absolute; left: -.87em; padding-right: .23em;
+  font-size: .85em; opacity: 0; color: var(--accent);
+}
+h1:hover .header-anchor, h2:hover .header-anchor, h3:hover .header-anchor, h4:hover .header-anchor { opacity: 1; }
+.header-anchor:hover { text-decoration: none; }
+p, ul, ol { margin: 1rem 0; }
+li + li { margin-top: .25rem; }
+li > p { margin: .5rem 0; }
+strong { font-weight: 600; }
+hr { border: 0; border-top: 1px solid var(--border); margin: 2.5rem 0; }
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  font-size: .85em;
+  color: var(--code-inline);
+  background: var(--code-inline-bg);
+  padding: .25rem .5rem; border-radius: 3px;
+  overflow-wrap: anywhere;
+}
+a code { color: var(--accent); }
+
+/* code blocks */
+div.sourceCode, .content > pre, li > pre {
+  position: relative;
+  background: var(--pre-bg);
+  border-radius: 6px;
+  margin: .85rem 0;
+}
+pre {
+  margin: 0;
+  padding: 1.25rem 1.5rem;
+  overflow-x: auto;
+  background: var(--pre-bg);
+  border-radius: 6px;
+  line-height: 1.4;
+}
+pre code, pre code span {
+  color: #fff; background: transparent; padding: 0; border-radius: 0;
+  font-size: .85em; overflow-wrap: normal;
+}
+pre code { white-space: pre; }
+.lang-label {
+  position: absolute; top: .8em; right: 1em; z-index: 1;
+  font-size: .75rem; color: rgba(255, 255, 255, .4);
+  font-family: source-code-pro, Menlo, Monaco, Consolas, monospace;
+  transition: opacity .2s;
+}
+.copy-btn {
+  position: absolute; top: .55em; right: .6em; z-index: 2;
+  font-size: .75rem; color: rgba(255, 255, 255, .8);
+  background: rgba(255, 255, 255, .1); border: 1px solid rgba(255, 255, 255, .2);
+  border-radius: 4px; padding: .15rem .55rem; cursor: pointer;
+  opacity: 0; transition: opacity .2s;
+}
+div.sourceCode:hover .copy-btn, .content > pre:hover .copy-btn, li > pre:hover .copy-btn { opacity: 1; }
+div.sourceCode:hover .lang-label { opacity: 0; }
+
+/* syntax colors (One Dark–like, as in the Entando / VuePress docs) */
+code span.kw, code span.cf, code span.im { color: #cc99cd; }
+code span.dt, code span.bu { color: #f8c555; }
+code span.st, code span.ch, code span.ss, code span.vs { color: #7ec699; }
+code span.co, code span.cv, code span.do, code span.an { color: #999; font-style: italic; }
+code span.dv, code span.bn, code span.fl, code span.cn { color: #f08d49; }
+code span.fu { color: #f08d49; }
+code span.at { color: #e2777a; }
+code span.op { color: #67cdcc; }
+code span.va { color: #e2777a; }
+code span.pp { color: #cc99cd; }
+code span.ot { color: #6196cc; }
+code span.sc { color: #67cdcc; }
+code span.er, code span.al { color: #e2777a; font-weight: 600; }
+
+/* tables */
+table {
+  border-collapse: collapse; margin: 1rem 0;
+  display: block; overflow-x: auto;
+}
+th, td { border: 1px solid #dfe2e5; padding: .6em 1em; text-align: left; vertical-align: top; }
+th { font-weight: 600; }
+tr:nth-child(2n) { background: #f6f8fa; }
+
+blockquote {
+  margin: 1rem 0; padding: .1rem 1rem;
+  border-left: .2rem solid #dfe2e5; color: #6a737d; font-size: 1rem;
+}
+
+/* "Goal:", "Start:", "Check:" … highlighted like VuePress custom blocks */
+p.tip, p.check {
+  padding: .5rem 1.5rem; border-left: .5rem solid; border-radius: 2px; margin: 1rem 0;
+}
+p.tip { background: #f3f5f7; border-color: #42b983; }
+p.check { background: #eef5fd; border-color: var(--accent); }
+p.stuck { background: rgba(255, 229, 100, .3); border-left: .5rem solid #e7c000; padding: .5rem 1.5rem; border-radius: 2px; }
+
+.footer {
+  margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border);
+  font-size: .85rem; color: var(--muted);
+}
+
+/* back to top */
+.to-top {
+  position: fixed; right: 1.5rem; bottom: 1.5rem; z-index: 5;
+  width: 2.4rem; height: 2.4rem; border-radius: 50%;
+  background: var(--accent); color: #fff; border: 0; cursor: pointer;
+  font-size: 1.1rem; box-shadow: 0 2px 6px rgba(0,0,0,.2);
+  opacity: 0; pointer-events: none; transition: opacity .3s;
+}
+.to-top.show { opacity: 1; pointer-events: auto; }
+
+/* ---------- responsive ---------- */
+@media (max-width: 959px) {
+  :root { --sidebar-w: 16.4rem; }
+  .sidebar { font-size: 15px; }
+}
+@media (max-width: 719px) {
+  .sidebar-toggle { display: block; }
+  .navbar { padding-left: 1rem; }
+  .navbar .nav-link { display: none; }
+  .sidebar { transform: translateX(-100%); transition: transform .2s ease; }
+  body.sidebar-open .sidebar { transform: none; box-shadow: 0 0 20px rgba(0,0,0,.15); }
+  .page { padding-left: 0; }
+  .content { padding: 1.5rem 1rem 3rem; }
+  .content > div.sourceCode, .content > pre { margin: .85rem -1rem; border-radius: 0; }
+  h1 { font-size: 1.9rem; }
+  .header-anchor { display: none; }
+}
+@media print {
+  .navbar, .sidebar, .to-top, .copy-btn { display: none !important; }
+  .page { padding: 0; }
+  pre { white-space: pre-wrap; }
+}
+</style>
+</head>
+<body>
+<header class="navbar">
+  <button class="sidebar-toggle" aria-label="Toggle sidebar">
+    <svg viewBox="0 0 448 512"><path fill="currentColor" d="M436 124H12c-6.6 0-12-5.4-12-12V80c0-6.6 5.4-12 12-12h424c6.6 0 12 5.4 12 12v32c0 6.6-5.4 12-12 12zm0 160H12c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h424c6.6 0 12 5.4 12 12v32c0 6.6-5.4 12-12 12zm0 160H12c-6.6 0-12-5.4-12-12v-32c0-6.6 5.4-12 12-12h424c6.6 0 12 5.4 12 12v32c0 6.6-5.4 12-12 12z"/></svg>
+  </button>
+  <a class="logo" href="#">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <rect x="2" y="2" width="28" height="28" rx="6" fill="#1d6fc9"/>
+      <path d="M10 9h12v3H13.5v2.5H21v3h-7.5V20H22v3H10z" fill="#fff"/>
+    </svg>
+    Hello Bundle
+  </a>
+  <span class="version">Entando 7.5</span>
+  <span class="spacer"></span>
+  <a class="nav-link" href="https://developer.entando.com/v7.5/" target="_blank" rel="noopener">Entando Docs</a>
+</header>
+
+<aside class="sidebar">
+  <p class="group-title">Hello Bundle — Windows guide</p>
+  <nav>
+<ul><li><a href="#choose-how-to-work">Choose how to work</a></li><li><a href="#option-a-wsl-2-recommended">Option A — WSL 2 (recommended)</a><ul><li><a href="#install">Install</a></li><li><a href="#where-the-project-lives">Where the project lives</a></li><li><a href="#the-browser">The browser</a></li><li><a href="#what-changes-in-the-steps-wsl-2">What changes in the steps (WSL 2)</a></li></ul></li><li><a href="#option-b-git-bash">Option B — Git Bash</a><ul><li><a href="#install-1">Install</a></li><li><a href="#once-before-step-7-let-npm-use-git-bash">Once, before step 7: let npm use Git Bash</a></li><li><a href="#line-endings">Line endings</a></li><li><a href="#what-changes-in-the-steps-git-bash">What changes in the steps (Git Bash)</a></li></ul></li><li><a href="#when-something-does-not-work">When something does not work</a></li></ul>
+  </nav>
+</aside>
+
+<main class="page">
+  <div class="content">
+    <h1 id="top">Hello Bundle — Windows guide</h1>
+<p>This page goes with the step-by-step guide <a href="STEPS.html"><code>STEPS.html</code></a>. Follow <a href="STEPS.html"><code>STEPS.html</code></a> step by step: this page tells you what to install on Windows, and what to do differently in the few steps where Windows is not like Linux or macOS. A step that is not named here works exactly as <a href="STEPS.html"><code>STEPS.html</code></a> says.</p><h1 id="choose-how-to-work">Choose how to work</h1><p>On Windows there are two ways to follow the course. Choose one before step 1 and keep it until the end.</p><table><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><thead><tr class="header"><th></th><th>WSL 2 (recommended)</th><th>Git Bash</th></tr></thead><tbody><tr class="odd"><td>What it is</td><td>A real Linux (Ubuntu) inside Windows</td><td>A bash terminal for Windows programs</td></tr><tr class="even"><td>The commands of the guide</td><td>Work as written</td><td>Work, after one npm setting before step 7</td></tr><tr class="odd"><td>Where you install the tools</td><td>Inside Ubuntu</td><td>In Windows</td></tr><tr class="even"><td>Docker</td><td>Docker Desktop, with WSL integration</td><td>Docker Desktop</td></tr></tbody></table><p><strong>Do not mix the two.</strong> For example, a project inside Ubuntu built with the Node.js of Windows does not work. Every command in this page and in <a href="STEPS.html"><code>STEPS.html</code></a> is typed in <strong>one</strong> kind of terminal: the Ubuntu terminal for WSL 2, the <em>Git Bash</em> window for Git Bash. Never PowerShell or the Command Prompt, except where this page says so.</p><h1 id="option-a-wsl-2-recommended">Option A — WSL 2 (recommended)</h1><h2 id="install">Install</h2><ol type="1"><li><p>Open <strong>PowerShell as administrator</strong> (the only time you need it) and install Ubuntu:</p><div class="sourceCode" id="cb1"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>wsl --install -d Ubuntu</span></code></pre></div><p>Restart Windows when it asks. At the first start, Ubuntu asks for a Linux user name and password: choose them and write them down. Then check, again in PowerShell, that the <code>VERSION</code> of Ubuntu is <code>2</code>:</p><div class="sourceCode" id="cb2"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>wsl -l -v</span></code></pre></div></li><li><p>Install <strong>Docker Desktop</strong> for Windows. In Docker Desktop open <em>Settings</em> → <em>Resources</em> → <em>WSL integration</em> and turn on <strong>Ubuntu</strong>. Docker Desktop must be running every time you work on the course.</p></li><li><p>Open the <strong>Ubuntu</strong> terminal (from the Start menu) and install the tools there:</p><div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="fu">sudo</span> apt update</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="fu">sudo</span> apt install -y git curl openjdk-17-jdk maven</span></code></pre></div><p>The Node.js of Ubuntu is too old for Vite. Install Node.js 20.19 or newer with <a href="https://github.com/nvm-sh/nvm">nvm</a>, following its instructions, then:</p><div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="ex">nvm</span> install 22</span></code></pre></div><p>Install the <code>ent</code> command line (Entando 7.5) inside Ubuntu, with the Linux instructions of Entando.</p></li><li><p>Check the tools as <a href="STEPS.html"><code>STEPS.html</code></a> says in <em>Tools to install</em>, in the Ubuntu terminal. Then check that every tool is the Linux one, inside Ubuntu:</p><div class="sourceCode" id="cb5"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="fu">which</span> git java mvn node ent docker</span></code></pre></div><p>No line may start with <code>/mnt/c/</code>: that would be a Windows program, and the course does not work with it.</p></li></ol><h2 id="where-the-project-lives">Where the project lives</h2><p>Clone the project in your Linux home folder, <strong>not</strong> in a Windows folder (<code>/mnt/c/...</code>):</p><div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="bu">cd</span> ~</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="fu">git</span> clone --branch beginner-version https://github.com/entando-samples/basic-training-bundle.git hello-bundle</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="bu">cd</span> hello-bundle</span></code></pre></div><p>Under <code>/mnt/c</code> npm is very slow, and Vite does not see when you save a file, so the test page of hello-receiver does not reload.</p><p>To edit the files, install Visual Studio Code in Windows with its <strong>WSL</strong> extension, then type <code>code .</code> in the project folder. In the Windows File Explorer, the project is at <code>\\wsl$\Ubuntu\home\&lt;your Linux user&gt;\hello-bundle</code>.</p><h2 id="the-browser">The browser</h2><p>Use the browser of Windows: the addresses of the guide, like <a href="http://localhost:5000">http://localhost:5000</a>, open as they are, because WSL 2 passes <code>localhost</code> to Windows. As <a href="STEPS.html"><code>STEPS.html</code></a> says, always type <code>localhost</code>, not <code>127.0.0.1</code>.</p><h2 id="what-changes-in-the-steps-wsl-2">What changes in the steps (WSL 2)</h2><ul><li><p><strong>Step 3</strong> — the kubeconfig file from your trainer is in a Windows folder. Copy it into Ubuntu first:</p><div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="fu">cp</span> /mnt/c/Users/<span class="op">&lt;</span>your Windows user<span class="op">&gt;</span>/Downloads/<span class="op">&lt;</span>the kubeconfig file<span class="op">&gt;</span> ~/kubeconfig</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="ex">ent</span> attach-kubeconfig ~/kubeconfig</span></code></pre></div><p><code>docker login</code> works as written: Docker Desktop keeps the login.</p></li><li><p><strong>Step 20</strong> — Keycloak must write its database in <code>svc/keycloak/keycloak-db/</code>, and inside its container it runs as the user with id 1000. The first Linux user of Ubuntu usually has the id 1000 (check with <code>id -u</code>): then Keycloak works. If your id is not 1000, use the <code>chmod</code> of step 20, point 8.</p></li></ul><p>Every other step works exactly as in <a href="STEPS.html"><code>STEPS.html</code></a>.</p><h1 id="option-b-git-bash">Option B — Git Bash</h1><h2 id="install-1">Install</h2><p>Install these Windows programs, each with its normal installer:</p><ol type="1"><li><strong>Git for Windows</strong>: it contains <em>Git Bash</em>.</li><li><strong>Docker Desktop</strong>. It must be running every time you work on the course.</li><li><strong>Java 17</strong> (for example Eclipse Temurin 17) and <strong>Maven 3.6.3 or newer</strong>. Maven is a zip: unpack it and add its <code>bin</code> folder to the <code>Path</code> of Windows.</li><li><strong>Node.js 20.19 or newer</strong>, from the installer of nodejs.org.</li><li>The <code>ent</code> command line (Entando 7.5), with the Windows instructions of Entando.</li></ol><p>Open <strong>Git Bash</strong> (from the Start menu) and check the tools as <a href="STEPS.html"><code>STEPS.html</code></a> says in <em>Tools to install</em>. Type every command of the course in Git Bash.</p><p>If your Windows user name has a space (<code>C:\Users\Mario Rossi</code>), clone the project in a folder without spaces, for example <code>C:\work</code>:</p><div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="fu">mkdir</span> -p /c/work <span class="kw">&amp;&amp;</span> <span class="bu">cd</span> /c/work</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="fu">git</span> clone --branch beginner-version https://github.com/entando-samples/basic-training-bundle.git hello-bundle</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="bu">cd</span> hello-bundle</span></code></pre></div><h2 id="once-before-step-7-let-npm-use-git-bash">Once, before step 7: let npm use Git Bash</h2><p><code>ent</code> runs the <code>commands</code> of <code>entando.json</code> with bash, but npm runs the scripts of <code>package.json</code> with the Command Prompt of Windows, even when you start it from Git Bash. From step 7, the <code>build</code> script of hello-sender uses <code>mkdir -p</code> and <code>cat</code>, which the Command Prompt does not know. Tell npm to use the bash of Git Bash:</p><div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="ex">npm</span> config set script-shell <span class="st">&quot;</span><span class="va">$(</span><span class="ex">cygpath</span> -w <span class="st">&quot;</span><span class="va">$(</span><span class="fu">which</span> bash<span class="va">)</span><span class="st">&quot;</span><span class="va">)</span><span class="st">&quot;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="ex">npm</span> config get script-shell     # shows the bash.exe of Git, for example C:\Program Files\Git\usr\bin\bash.exe</span></code></pre></div><p>Without it, <code>ent bundle run hello-sender</code> stops with <em>'cat' is not recognized as an internal or external command</em>, and a folder named <code>-p</code> appears in <code>microfrontends/hello-sender</code>.</p><h2 id="line-endings">Line endings</h2><p>On Windows, Git changes the end of every line when it writes the files (the setting <code>core.autocrlf</code>). That is normal: <code>git diff beginner-step-NN</code> still compares correctly. Do not change this setting during the course.</p><h2 id="what-changes-in-the-steps-git-bash">What changes in the steps (Git Bash)</h2><ul><li><strong>Step 3</strong> — give <code>ent attach-kubeconfig</code> the path in Git Bash style, for example <code>ent attach-kubeconfig ~/Downloads/&lt;the kubeconfig file&gt;</code>.</li><li><strong>Step 7</strong> — set the npm script shell first (see above).</li><li><strong>Step 20</strong> — skip the <code>chmod</code> of point 8: with Docker Desktop, Keycloak can always write its database. The <code>curl</code>, <code>sed</code> and <code>TOKEN=$(...)</code> commands work in Git Bash; they do not work in PowerShell.</li></ul><p>Every other step works exactly as in <a href="STEPS.html"><code>STEPS.html</code></a>.</p><h1 id="when-something-does-not-work">When something does not work</h1><table><colgroup><col style="width: 33%" /><col style="width: 33%" /><col style="width: 33%" /></colgroup><thead><tr class="header"><th>What you see</th><th>Why</th><th>What to do</th></tr></thead><tbody><tr class="odd"><td><code>docker: command not found</code> in Ubuntu</td><td>Docker Desktop is closed, or WSL integration is off</td><td>Start Docker Desktop and turn on <em>WSL integration</em> for Ubuntu</td></tr><tr class="even"><td><em>'cat' is not recognized…</em> and a folder <code>-p</code> (Git Bash)</td><td>npm uses the Command Prompt</td><td>Set the npm script shell (Git Bash, before step 7)</td></tr><tr class="odd"><td>The test page of hello-receiver does not reload (WSL 2)</td><td>The project is under <code>/mnt/c</code></td><td>Clone it again in <code>~</code></td></tr><tr class="even"><td>A page opens inside Ubuntu (<code>curl http://localhost:5173</code>) but not in the Windows browser (WSL 2)</td><td>Windows does not get that address from WSL</td><td>In Windows 11, create <code>C:\Users\&lt;you&gt;\.wslconfig</code> with the two lines <code>[wsl2]</code> and <code>networkingMode=mirrored</code>, run <code>wsl --shutdown</code> in PowerShell, then open Ubuntu again</td></tr><tr class="odd"><td>Port <code>5000</code> or <code>5001</code> is <em>already in use</em> or <em>access denied</em>, but nothing of yours uses it</td><td>Windows reserves some ports for itself</td><td>In PowerShell: <code>netsh interface ipv4 show excludedportrange protocol=tcp</code>; if the port is in a range, ask your trainer</td></tr><tr class="even"><td><em>The microservice is not reachable.</em></td><td>hello-ms is not running yet, or the address is <code>127.0.0.1</code></td><td>See steps 13 and 17 of <a href="STEPS.html"><code>STEPS.html</code></a></td></tr></tbody></table>
+    <div class="footer">Generated from STEPS.md</div>
+  </div>
+</main>
+
+<button class="to-top" aria-label="Back to top">&#8593;</button>
+
+<script>
+(function () {
+  var content = document.querySelector('.content');
+
+  // header anchors
+  content.querySelectorAll('h1[id], h2[id], h3[id], h4[id]').forEach(function (h) {
+    var a = document.createElement('a');
+    a.className = 'header-anchor'; a.href = '#' + h.id; a.textContent = '#';
+    a.setAttribute('aria-hidden', 'true');
+    h.insertBefore(a, h.firstChild);
+  });
+
+  // language labels + copy buttons
+  content.querySelectorAll('pre').forEach(function (pre) {
+    var box = pre.parentElement.classList.contains('sourceCode') ? pre.parentElement : pre;
+    var m = (pre.className || '').match(/sourceCode\s+(\w+)/);
+    if (m) {
+      var label = document.createElement('span');
+      label.className = 'lang-label'; label.textContent = m[1];
+      box.appendChild(label);
+    }
+    var btn = document.createElement('button');
+    btn.className = 'copy-btn'; btn.textContent = 'Copy';
+    btn.addEventListener('click', function () {
+      var text = pre.innerText;
+      var done = function () { btn.textContent = 'Copied!'; setTimeout(function () { btn.textContent = 'Copy'; }, 1500); };
+      if (navigator.clipboard) { navigator.clipboard.writeText(text).then(done, function () {}); }
+    });
+    box.appendChild(btn);
+  });
+
+  // callout styling for the recurring step markers
+  content.querySelectorAll('p').forEach(function (p) {
+    var s = p.firstElementChild;
+    if (!s || s.tagName !== 'STRONG' || p.firstChild !== s) return;
+    var t = s.textContent.trim();
+    if (/^(Goal|Start):?$/.test(t)) p.classList.add('tip');
+    else if (/^(Check|What you should see):?$/.test(t)) p.classList.add('check');
+    else if (/^Stuck\?$/.test(t)) p.classList.add('stuck');
+  });
+
+  // mobile sidebar
+  document.querySelector('.sidebar-toggle').addEventListener('click', function () {
+    document.body.classList.toggle('sidebar-open');
+  });
+  document.querySelectorAll('.sidebar a').forEach(function (a) {
+    a.addEventListener('click', function () { document.body.classList.remove('sidebar-open'); });
+  });
+
+  // active link in the sidebar
+  var links = Array.prototype.slice.call(document.querySelectorAll('.sidebar a[href^="#"]'));
+  var heads = links.map(function (a) { return document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1))); });
+  var toTop = document.querySelector('.to-top');
+  toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  function onScroll() {
+    var y = window.scrollY + 100, current = -1;
+    heads.forEach(function (h, i) { if (h && h.offsetTop <= y) current = i; });
+    links.forEach(function (a, i) {
+      a.classList.toggle('active', i === current);
+    });
+    // also mark the parent step of an active sub-link
+    if (current >= 0) {
+      var parentLi = links[current].closest('ul ul');
+      if (parentLi) {
+        var top = parentLi.parentElement.querySelector(':scope > a');
+        if (top) top.classList.add('active');
+      }
+      var al = links[current];
+      var sb = document.querySelector('.sidebar');
+      var r = al.getBoundingClientRect(), sr = sb.getBoundingClientRect();
+      if (r.top < sr.top || r.bottom > sr.bottom) al.scrollIntoView({ block: 'nearest' });
+    }
+    toTop.classList.toggle('show', window.scrollY > 600);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+})();
+</script>
+</body>
+</html>

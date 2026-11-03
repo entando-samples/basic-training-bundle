@@ -32,5 +32,9 @@
 ######################
 
 !.gitkeep
-.PLAN/
-.REVIEW/
+/.DECK/
+/.DOCS/
+/.PLAN/
+/.REVIEW/
+/.STEPS-BEGINNER/
+mise.toml
