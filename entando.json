@@ -1,5 +1,11 @@
 {
-    "microservices": [],
+    "microservices": [
+        {
+            "name": "hello-ms",
+            "stack": "spring-boot",
+            "healthCheckPath": "/api/health"
+        }
+    ],
     "microfrontends": [
         {
             "name": "hello-sender",
@@ -41,7 +47,7 @@
     ],
     "svc": [],
     "name": "hello-bundle",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "description": "Hello Bundle: Entando 7.5 training for beginners",
     "type": "bundle",
     "displayName": "Hello Bundle"
