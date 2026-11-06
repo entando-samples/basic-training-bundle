@@ -7,6 +7,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,7 +23,10 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain rules(HttpSecurity http, JwtAuthenticationConverter keycloakRoles) throws Exception {
-        http.authorizeHttpRequests(auth -> auth
+        // Before a call with a token, the browser asks first (OPTIONS, without the token) if the call is allowed:
+        // answer with the @CrossOrigin rules of the controller, before checking any token.
+        http.cors(Customizer.withDefaults())
+            .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/secret").authenticated() // needs a valid Keycloak token
                 .anyRequest().permitAll()) // everything else stays public
             // Accept tokens (JWT) only if Keycloak signed them: see issuer-uri in application.yml.

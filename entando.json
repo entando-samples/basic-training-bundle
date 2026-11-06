@@ -60,9 +60,16 @@
                 "run": "npm install && npm run dev",
                 "pack": "npm install && npm run build"
             },
-            "version": "0.1.0",
+            "version": "0.2.0",
             "contextParams": [
                 "page_code"
+            ],
+            "apiClaims": [
+                {
+                    "name": "hello-api",
+                    "type": "internal",
+                    "serviceName": "hello-ms"
+                }
             ]
         },
         {
@@ -85,7 +92,7 @@
         "keycloak"
     ],
     "name": "hello-bundle",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Hello Bundle: Entando 7.5 training for beginners",
     "type": "bundle",
     "displayName": "Hello Bundle"

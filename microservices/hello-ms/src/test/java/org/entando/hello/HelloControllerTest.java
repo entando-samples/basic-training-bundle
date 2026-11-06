@@ -51,6 +51,17 @@ class HelloControllerTest {
             .andExpect(jsonPath("$.message").value("Hello admin, only signed-in users can read this."));
     }
 
+    @Test
+    void browserMayAskForTheSecretFromALocalPage() throws Exception {
+        // Before sending a token, the browser asks (OPTIONS, without the token) if the call is allowed.
+        mvc.perform(options("/api/secret")
+                .header("Origin", "http://localhost:5173")
+                .header("Access-Control-Request-Method", "GET")
+                .header("Access-Control-Request-Headers", "authorization"))
+            .andExpect(status().isOk())
+            .andExpect(header().string("Access-Control-Allow-Origin", "http://localhost:5173"));
+    }
+
     // A fake Keycloak token for user "admin" with the given "resource_access" claim.
     // Its roles are read by the same code that hello-ms uses for the real tokens.
     private static JwtRequestPostProcessor keycloakToken(Map<String, Object> resourceAccess) {
