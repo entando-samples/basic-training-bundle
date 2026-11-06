@@ -11,8 +11,9 @@
   <h1>hello-receiver</h1>
   <p>This paragraph is red; the receiver below stays green.</p>
 
-  <!-- On Entando, the platform writes the config attribute. Here we write it by hand. -->
-  <hello-receiver config='{"contextParams":{"page_code":"homepage"}}'></hello-receiver>
+  <!-- On Entando, the platform writes the config attribute. Here we write it by hand:
+       systemParams.api gives the address of hello-ms ("apiClaims" in entando.json). -->
+  <hello-receiver config='{"contextParams":{"page_code":"homepage"},"systemParams":{"api":{"hello-api":{"url":"http://localhost:8081"}}}}'></hello-receiver>
 
   <!-- hello-sender is deployed on its own: here we play its part and publish the "hello" event ourselves. -->
   <h2>Pretend to be hello-sender</h2>
@@ -20,12 +21,23 @@
   <button id="send">Publish "hello"</button>
   <button id="toggle">Remove / add the receiver</button>
 
+  <!-- On Entando, the page signs the user in with Keycloak. Here we paste a token obtained with curl. -->
+  <h2>Pretend to be Entando: the signed-in user</h2>
+  <input id="token" placeholder="Paste a token here (empty = nobody signed in)" size="50">
+  <button id="signin">Use this token</button>
+
   <script type="module" src="/src/main.jsx"></script>
   <script type="module">
     import { mediatorInstance } from '@entando/mfecommunication';
 
     document.querySelector('#send').onclick = () =>
       mediatorInstance.publish('hello', { text: document.querySelector('#text').value });
+
+    // What Entando does on a real page: window.entando.keycloak tells the widgets who is signed in.
+    document.querySelector('#signin').onclick = () => {
+      const token = document.querySelector('#token').value.trim();
+      window.entando = { ...window.entando, keycloak: { authenticated: token !== '', token } };
+    };
 
     // Removing the element calls disconnectedCallback (unsubscribe); adding it back subscribes again.
     const receiver = document.querySelector('hello-receiver');

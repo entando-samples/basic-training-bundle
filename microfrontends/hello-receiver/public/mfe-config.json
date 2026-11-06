@@ -1,0 +1,9 @@
+{
+    "systemParams": {
+        "api": {
+            "hello-api": {
+                "url": "http://localhost:8081"
+            }
+        }
+    }
+}

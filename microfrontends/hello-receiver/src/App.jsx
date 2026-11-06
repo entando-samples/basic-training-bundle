@@ -11,8 +11,34 @@ function assetUrl(file) {
   return `${basePath.replace(/\/$/, '')}/${file}`
 }
 
+// Asks hello-ms for the secret and returns the text to show.
+// The button is visible to everyone: hello-ms decides who may read the secret, and we only show its answer.
+async function readSecret(config) {
+  const apiUrl = config.systemParams?.api?.['hello-api']?.url // "apiClaims" in entando.json
+  const keycloak = window.entando?.keycloak
+  if (!apiUrl || !keycloak?.authenticated || !keycloak.token) {
+    return 'Guest user' // nobody signed in: we don't even ask
+  }
+  try {
+    await keycloak.updateToken?.(30) // a token lasts a few minutes: renew it if it expires within 30 seconds
+    const response = await fetch(`${apiUrl}/api/secret`, {
+      headers: { Authorization: `Bearer ${keycloak.token}` }, // the token proves who we are
+    })
+    if (response.status === 200) {
+      return (await response.json()).message
+    }
+    if (response.status === 403) {
+      return 'No permission' // signed in, but without the role hello-user
+    }
+    return 'Guest user' // 401: hello-ms did not accept the token (expired, fake...)
+  } catch {
+    return 'Guest user' // network error, or Keycloak could not renew the token
+  }
+}
+
 export default function App({ config }) {
   const [received, setReceived] = useState()
+  const [secret, setSecret] = useState('')
   const page = config.contextParams?.page_code ?? 'unknown' // "contextParams" in entando.json
 
   // Subscribe to the "hello" event of hello-sender; unsubscribe when the element leaves the page.
@@ -29,6 +55,10 @@ export default function App({ config }) {
       <div className="card" part="card">
         <img src={assetUrl('mailbox.svg')} alt="Mailbox" />
         <p>{received === undefined ? `Waiting for a message on page ${page}` : `Received: ${received}`}</p>
+      </div>
+      <div className="secret" part="secret">
+        <button type="button" onClick={async () => setSecret(await readSecret(config))}>Read the secret</button>
+        <span>{secret}</span>
       </div>
     </>
   )
